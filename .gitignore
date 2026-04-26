@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+
+# virtual environments
+.venv/
+venv/
+pmath-env/
+
+# uv environments
+uv.lock
+
+# builds / compiled stuff
+build/
+dist/
+
+# Sage / large packages
+*.so
+*.o
+
+# experiments noise (optional)
+experiments/__pycache__/
+
+# DO NOT commit installed dependencies
+*.egg-info/
+
+# nested repos
+fork/
+
+# OS junk
+.DS_Store
