@@ -1,13 +1,25 @@
-from sage.graphs.graph import Graph
-from experiments.utils.timing import time_function
-
-# small test graph
-G = Graph([(0,1,1),(1,2,2),(0,2,5)], weighted=True)
+import heapq
 
 def run_dijkstra(G):
-    return graph_global.shortest_path(0, 2, by_weight=True)
+    # G is adjacency list: {node: [(neighbor, weight), ...]}
 
-result, runtime = time_function(run_dijkstra)
+    start = 0
+    target = 2
 
-print("Shortest path (Dijkstra):", result)
-print("Runtime:", runtime)
+    dist = {node: float('inf') for node in G}
+    dist[start] = 0
+
+    pq = [(0, start)]
+
+    while pq:
+        d, u = heapq.heappop(pq)
+
+        if u == target:
+            return d
+
+        for v, w in G[u]:
+            if dist[v] > d + w:
+                dist[v] = d + w
+                heapq.heappush(pq, (dist[v], v))
+
+    return dist[target]

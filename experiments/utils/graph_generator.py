@@ -1,11 +1,12 @@
-from sage.graphs.graph import Graph
 import random
 
-def random_graph(n, p=0.3, weight_range=(1,10)):
-    edges = []
+def random_graph(n, edge_prob=0.3):
+    G = {i: [] for i in range(n)}
+
     for i in range(n):
-        for j in range(i+1, n):
-            if random.random() < p:
-                w = random.randint(*weight_range)
-                edges.append((i,j,w))
-    return Graph(edges, weighted=True)
+        for j in range(n):
+            if i != j and random.random() < edge_prob:
+                weight = random.randint(1, 10)
+                G[i].append((j, weight))
+
+    return G
