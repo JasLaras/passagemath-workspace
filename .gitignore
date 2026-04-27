@@ -29,3 +29,5 @@ fork/
 
 # OS junk
 .DS_Store
+fork/
+pmath-env/
