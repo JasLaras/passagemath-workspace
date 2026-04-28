@@ -6,7 +6,6 @@ This repository is my workspace for working in a mathematics research lab focuse
 
 The project combines:
 
-* Contributing to the **Passagemath** codebase (modular SageMath)
 * Running **independent experiments** on optimization vs. graph/algorithmic methods
 * Developing material for a **research thesis (20–30 pages)**
 
