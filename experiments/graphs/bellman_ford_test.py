@@ -1,11 +1,7 @@
 def run_bellman_ford(G):
-    """
-    G is adjacency list:
-    {node: [(neighbor, weight), ...]}
-    """
 
     start = 0
-    target = 2
+    target = max(G.keys())
 
     dist = {node: float('inf') for node in G}
     dist[start] = 0

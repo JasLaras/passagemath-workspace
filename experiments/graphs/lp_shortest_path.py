@@ -1,25 +1,50 @@
-from sage.all import MixedIntegerLinearProgram
+from sage.numerical.mip import MixedIntegerLinearProgram
+from sage.graphs.digraph import DiGraph
 
-def run_lp(G, source=0, target=1):
+def run_lp(G_dict):
+
+    source = 0
+    target = max(G_dict.keys())
+
+    edges = []
+
+    for u in G_dict:
+        for v, w in G_dict[u]:
+            edges.append((u, v, w))
+
+    G = DiGraph()
+
+    for u, v, w in edges:
+        G.add_edge(u, v, w)
+
     p = MixedIntegerLinearProgram(maximization=False)
 
-    # x[u,v] = whether edge is used
     x = p.new_variable(nonnegative=True)
 
-    # objective: minimize total weight
     p.set_objective(
-        sum(w * x[u, v] for u, v, w in G.edges())
+        sum(w * x[u, v] for u, v, w in edges)
     )
 
-    # flow conservation constraints
     for v in G.vertices():
-        inflow = sum(x[u, v] for u, u2, _ in G.edges() if u2 == v)
-        outflow = sum(x[v, u] for v2, u, _ in G.edges() if v2 == v)
+
+        inflow = sum(
+            x[u, v2]
+            for u, v2, w in edges
+            if v2 == v
+        )
+
+        outflow = sum(
+            x[v2, u]
+            for v2, u, w in edges
+            if v2 == v
+        )
 
         if v == source:
             p.add_constraint(outflow - inflow == 1)
+
         elif v == target:
             p.add_constraint(inflow - outflow == 1)
+
         else:
             p.add_constraint(inflow == outflow)
 
