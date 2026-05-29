@@ -1,4 +1,5 @@
 import json
+import random
 
 from experiments.utils.graph_generator import random_graph
 from experiments.utils.benchmark import measure
@@ -7,6 +8,7 @@ from experiments.graphs.dijkstra_test import run_dijkstra
 from experiments.graphs.bellman_ford_test import run_bellman_ford
 from experiments.graphs.lp_shortest_path import run_lp
 
+random.seed(42)
 
 edge_probs = [0.1, 0.3, 0.5, 0.8]
 

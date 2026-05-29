@@ -1,51 +1,48 @@
 from sage.numerical.mip import MixedIntegerLinearProgram
-from sage.graphs.digraph import DiGraph
 
-def run_lp(G_dict):
+def run_lp(G):
 
     source = 0
-    target = max(G_dict.keys())
-
-    edges = []
-
-    for u in G_dict:
-        for v, w in G_dict[u]:
-            edges.append((u, v, w))
-
-    G = DiGraph()
-
-    for u, v, w in edges:
-        G.add_edge(u, v, w)
+    target = max(G.keys())
 
     p = MixedIntegerLinearProgram(maximization=False)
 
     x = p.new_variable(nonnegative=True)
 
+    # objective function
     p.set_objective(
-        sum(w * x[u, v] for u, v, w in edges)
+        sum(
+            w * x[u, v]
+            for u in G
+            for v, w in G[u]
+        )
     )
 
-    for v in G.vertices():
+    # flow conservation
+    for node in G:
 
         inflow = sum(
-            x[u, v2]
-            for u, v2, w in edges
-            if v2 == v
+            x[u, node]
+            for u in G
+            for v, w in G[u]
+            if v == node
         )
 
         outflow = sum(
-            x[v2, u]
-            for v2, u, w in edges
-            if v2 == v
+            x[node, v]
+            for v, w in G[node]
         )
 
-        if v == source:
+        if node == source:
+
             p.add_constraint(outflow - inflow == 1)
 
-        elif v == target:
+        elif node == target:
+
             p.add_constraint(inflow - outflow == 1)
 
         else:
+
             p.add_constraint(inflow == outflow)
 
     p.solve()
