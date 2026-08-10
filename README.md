@@ -225,6 +225,6 @@ sudo apt install ninja-build
 
 The `thesis/` directory contains the LaTeX source for the accompanying undergraduate thesis.
 
-The `presentation/` directory contains materials from the Mid-quarter MAT 199 presentation in spring.
+The `presentation/` directory contains materials from the mid-quarter MAT 199 presentation in spring.
 
 The complete source code and experimental results are maintained in this repository for reproducibility.
