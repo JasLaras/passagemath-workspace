@@ -48,8 +48,7 @@ passagemath-workspace/
 │   │
 │   ├── density_experiment.py       # Edge-density experiment
 │   ├── size_experiment.py          # Graph-size experiment
-│   ├── weight_experiment.py        # Edge-weight experiment
-│   └── smoke_test.py               # Basic implementation test
+│   └── weight_experiment.py        # Edge-weight experiment
 │
 ├── presentation/                   # Math Lab presentation materials
 │
