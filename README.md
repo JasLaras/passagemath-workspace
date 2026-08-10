@@ -32,12 +32,33 @@ The project combines:
 ```
 passagemath-workspace/
 │
-├── fork/                  # Fork of Passagemath (actual source code)
+├── fork/                           # Passagemath source code
 │
-├── experiments/           # Independent testing and research code
-│   ├── graphs/            # Dijkstra, flow, etc.
-│   └── utils/             # Helpers (timing, logging, etc.)
+├── experiments/                    # Experimental implementations and tests
+│   ├── graphs/
+│   │   ├── bellman_ford_test.py    # Bellman-Ford implementation
+│   │   ├── dijkstra_test.py        # Dijkstra implementation
+│   │   ├── lp_shortest_path.py     # Linear programming formulation
+│   │   └── random_graph.py
+│   │
+│   ├── utils/
+│   │   ├── benchmark.py            # Runtime benchmarking
+│   │   ├── graph_generator.py      # Random graph generation
+│   │   └── timing.py               # Timing utility
+│   │
+│   ├── density_experiment.py       # Edge-density experiment
+│   ├── size_experiment.py          # Graph-size experiment
+│   ├── weight_experiment.py        # Edge-weight experiment
+│   └── smoke_test.py               # Basic implementation test
 │
+├── presentation/                   # Math Lab presentation materials
+│
+├── thesis/                         # Thesis LaTeX source
+│
+├── density_results.json            # Density experiment results
+├── size_results.json               # Graph-size experiment results
+├── weight_results.json             # Edge-weight experiment results
+├── results.json                    # Earlier/general experiment results
 └── README.md
 ```
 
