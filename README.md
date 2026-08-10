@@ -38,8 +38,7 @@ passagemath-workspace/
 │   ├── graphs/
 │   │   ├── bellman_ford_test.py    # Bellman-Ford implementation
 │   │   ├── dijkstra_test.py        # Dijkstra implementation
-│   │   ├── lp_shortest_path.py     # Linear programming formulation
-│   │   └── random_graph.py
+│   │   └── lp_shortest_path.py     # Linear programming formulation
 │   │
 │   ├── utils/
 │   │   ├── benchmark.py            # Runtime benchmarking
