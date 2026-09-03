@@ -1,7 +1,7 @@
 import time
 from sage.numerical.mip import MixedIntegerLinearProgram
 
-def run_lp(G, measure_time = False):
+def run_lp(G, solver = "GLPK",measure_time = False):
 
     source = 0
     target = max(G.keys())
@@ -10,7 +10,7 @@ def run_lp(G, measure_time = False):
     
     construction_start = time.perf_counter()
 
-    p = MixedIntegerLinearProgram(maximization=False)
+    p = MixedIntegerLinearProgram(maximization=False, solver=solver)
 
     x = p.new_variable(nonnegative=True)
 

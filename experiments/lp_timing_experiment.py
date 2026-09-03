@@ -9,31 +9,42 @@ random.seed(42)
 
 sizes = [10, 20, 50, 100]
 runs = 5
+solvers = [None, "GLPK", "Coin"]
 
 for n in sizes:
 
     G = random_graph(n)
 
-    construction_times = []
-    solve_times = []
-    total_times = []
+    print("\n" + "=" * 50)
+    print("Graph Size:", n)
+    print("=" * 50)
 
-    for _ in range(runs):
+    for solver in solvers:
 
-        _, construction_time, solve_time, total_time = run_lp(
+        construction_times = []
+        solve_times = []
+        total_times = []
+
+        for _ in range(runs):
+
+            _, construction_time, solve_time, total_time = run_lp(
             G,
+            solver=solver,
             measure_time=True
-        )
+            )
 
-        construction_times.append(construction_time)
-        solve_times.append(solve_time)
-        total_times.append(total_time)
+            construction_times.append(construction_time)
+            solve_times.append(solve_time)
+            total_times.append(total_time)
         
-    avg_construction = statistics.mean(construction_times)
-    avg_solve = statistics.mean(solve_times)
-    avg_total = statistics.mean(total_times)
+        avg_construction = statistics.mean(construction_times)
+        avg_solve = statistics.mean(solve_times)
+        avg_total = statistics.mean(total_times)
 
-    print("\nGraph Size:", n)
-    print("Average LP Construction:", avg_construction)
-    print("Average LP Solve:", avg_solve)
-    print("Average LP Total:", avg_total)
+        solver_name = "Default" if solver is None else solver
+
+        print("\nSolver:", solver_name)
+        print("\nGraph Size:", n)
+        print("Average LP Construction:", avg_construction)
+        print("Average LP Solve:", avg_solve)
+        print("Average LP Total:", avg_total)
