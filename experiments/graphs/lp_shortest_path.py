@@ -1,15 +1,11 @@
 import time
 from sage.numerical.mip import MixedIntegerLinearProgram
 
-def run_lp(G, solver = "GLPK",measure_time = False):
-
+def build_lp(G, solver = "GLPK"):
     source = 0
     target = max(G.keys())
-    
-    # LP construction
-    
-    construction_start = time.perf_counter()
 
+    # LP construction
     p = MixedIntegerLinearProgram(maximization=False, solver=solver)
 
     x = p.new_variable(nonnegative=True)
@@ -25,7 +21,7 @@ def run_lp(G, solver = "GLPK",measure_time = False):
 
     # Flow conservation constraints
     for node in G:
-
+        
         inflow = sum(
             x[u, node]
             for u in G
@@ -49,23 +45,17 @@ def run_lp(G, solver = "GLPK",measure_time = False):
         else:
 
             p.add_constraint(inflow == outflow)
-    
-    construction_end = time.perf_counter()
 
-    # LP Solving 
+    return p
+
+def solve_lp(p, measure_time = False):
+    # LP solving
     solve_start = time.perf_counter()
 
     p.solve()
-    
+
     solve_end = time.perf_counter()
-    
     objective = p.get_objective_value()
-
-    construction_time = construction_end - construction_start
     solve_time = solve_end - solve_start
-    total_time = construction_time + solve_time
 
-    if measure_time:
-        return objective, construction_time, solve_time, total_time
-
-    return objective
+    return objective, solve_time
