@@ -11,6 +11,7 @@ random.seed(42)
 sizes = [10, 20, 50, 100]
 runs = 5
 
+solvers = ["Highs", "GLPK", "Coin", "Cvxpy"]
 
 for n in sizes:
 
@@ -20,38 +21,42 @@ for n in sizes:
     print("Graph Size:", n)
     print("=" * 50)
 
-    # Construct LP once
-    construction_start = time.perf_counter()
+    for solver in solvers:
 
-    p = build_lp(G)
+        print("\nSolver:", solver)
 
-    construction_end = time.perf_counter()
+        # Construct LP once
+        construction_start = time.perf_counter()
 
-    construction_time = construction_end - construction_start
+        p = build_lp(G, solver=solver)
 
-    # Solve the same LP repeatedly
-    solve_times = []
+        construction_end = time.perf_counter()
 
-    for _ in range(runs):
+        construction_time = construction_end - construction_start
 
-        _, solve_time = solve_lp(p)
+        # Solve the same LP repeatedly
+        solve_times = []
 
-        solve_times.append(solve_time)
+        for _ in range(runs):
 
-    avg_solve = statistics.mean(solve_times)
-    total_solve = sum(solve_times)
+            _, solve_time = solve_lp(p)
 
-    # Amortized construction cost
-    amortized_construction = construction_time / runs
+            solve_times.append(solve_time)
 
-    total_repeated = construction_time + total_solve
+        avg_solve = statistics.mean(solve_times)
+        total_solve = sum(solve_times)
 
-    average_cost_per_run = total_repeated / runs
+        # Amortized construction cost
+        amortized_construction = construction_time / runs
 
-    # Results
-    print("LP Construction (once):", construction_time)
-    print("Average LP Solve:", avg_solve)
-    print("Total Solve Time:", total_solve)
-    print("Amortized Construction per Run:", amortized_construction)
-    print("Average Total Cost per Run:", average_cost_per_run)
-    print("Total Cost (Construction + All Solves):", total_repeated)
+        total_repeated = construction_time + total_solve
+
+        average_cost_per_run = total_repeated / runs
+
+        # Results
+        print("LP Construction (once):", construction_time)
+        print("Average LP Solve:", avg_solve)
+        print("Total Solve Time:", total_solve)
+        print("Amortized Construction per Run:", amortized_construction)
+        print("Average Total Cost per Run:", average_cost_per_run)
+        print("Total Cost (Construction + All Solves):", total_repeated)

@@ -1,7 +1,7 @@
 import time
 from sage.numerical.mip import MixedIntegerLinearProgram
 
-def build_lp(G, solver = "GLPK"):
+def build_lp(G, solver = None):
     source = 0
     target = max(G.keys())
 
@@ -49,6 +49,7 @@ def build_lp(G, solver = "GLPK"):
     return p
 
 def solve_lp(p, measure_time = False):
+
     # LP solving
     solve_start = time.perf_counter()
 
