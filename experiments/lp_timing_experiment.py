@@ -14,7 +14,11 @@ solvers = ["Highs", "GLPK", "Cvxpy"]
 
 for n in sizes:
 
-    G = random_graph(n)
+    G = random_graph(
+        n=n,
+        edge_prob=0.3,
+        weight_max=10
+    )
 
     print("\n" + "=" * 50)
     print("Graph Size:", n)

@@ -39,7 +39,7 @@ def build_lp(G, solver = None):
 
     return p, x
 
-def solve_lp(p, x, measure_time = False):
+def solve_lp(p, x, G, measure_time = False):
 
     # Objective function
     p.set_objective(
