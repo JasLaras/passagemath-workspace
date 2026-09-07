@@ -49,7 +49,7 @@ for w in weight_ranges:
     print("Dijkstra:", t_dijkstra)
     print("Bellman-Ford:", t_bf)
 
-    results.append({
+    result = ({
         "weight_max": w,
         "dijkstra": t_dijkstra,
         "bellman_ford": t_bf,

@@ -35,7 +35,7 @@ for edge_prob in edge_probs:
     print("Dijkstra:", t_dijkstra)
     print("Bellman-Ford:", t_bf)
 
-    results.append({
+    result = ({
         "edge_prob": edge_prob,
         "dijkstra": t_dijkstra,
         "bellman_ford": t_bf,
