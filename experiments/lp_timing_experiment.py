@@ -1,5 +1,6 @@
 import random
 import statistics
+import time
 
 from experiments.utils.graph_generator import random_graph
 from experiments.graphs.lp_shortest_path import build_lp, solve_lp
