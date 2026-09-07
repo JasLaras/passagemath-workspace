@@ -8,21 +8,35 @@ from experiments.graphs.dijkstra_test import run_dijkstra
 from experiments.graphs.bellman_ford_test import run_bellman_ford
 from experiments.graphs.lp_shortest_path import run_lp
 
+# Reassign weights while keeping the same graph topology
+def reweight_graph(G, weight_max):
+    return {
+        u: [
+            (v, random.randint(1, weight_max))
+            for v, _ in G[u]
+        ]
+        for u in G
+    }
+
 random.seed(42)
 
 weight_ranges = [10, 100, 1000]
 
 results = []
 
+# Generate topology ONCE
+base_G = random_graph(
+    n=100,
+    edge_prob=0.3,
+    weight_max=10
+)
+
 for w in weight_ranges:
 
     print("\nWeight Range:", w)
 
-    G = random_graph(
-        n=100,
-        edge_prob=0.3,
-        weight_max=w
-    )
+    # Same topology, new edge weights
+    G = reweight_graph(base_G, weight_max=w)
 
     t_dijkstra = measure(G, run_dijkstra)
 

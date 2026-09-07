@@ -9,7 +9,7 @@ random.seed(42)
 
 sizes = [10, 20, 50, 100]
 runs = 5
-solvers = [None, "GLPK"]
+solvers = ["Highs", "GLPK", "Cvxpy"]
 
 for n in sizes:
 

@@ -10,15 +10,6 @@ def build_lp(G, solver = None):
 
     x = p.new_variable(nonnegative=True)
 
-    # Objective function
-    p.set_objective(
-        sum(
-            w * x[u, v]
-            for u in G
-            for v, w in G[u]
-        )
-    )
-
     # Flow conservation constraints
     for node in G:
         
@@ -46,16 +37,25 @@ def build_lp(G, solver = None):
 
             p.add_constraint(inflow == outflow)
 
-    return p
+    return p, x
 
-def solve_lp(p, measure_time = False):
+def solve_lp(p, x, measure_time = False):
 
-    # LP solving
-    solve_start = time.perf_counter()
+    # Objective function
+    p.set_objective(
+        sum(
+            w * x[u, v]
+            for u in G
+            for v, w in G[u]
+        )
+    )
+
+    solve_start = time.perf_counter()    
 
     p.solve()
 
     solve_end = time.perf_counter()
+    
     objective = p.get_objective_value()
     solve_time = solve_end - solve_start
 
