@@ -31,8 +31,10 @@ The LP formulation is evaluated using three optimization backends:
 
   * A linear programming approach implemented using PassageMath
   * Classical shortest-path algorithms implemented independently in Python
-* Evaluating runtime behavior as graph characteristics change
-* Collecting reproducible experimental results for analysis in the accompanying thesis
+* Evaluate runtime behavior as graph characteristics change
+* Compare different optimization backends used by the LP formulation
+* Examine LP model construction time separately from solver execution time
+* Collect reproducible experimental results for analysis in the accompanying thesis
 
 ---
 
@@ -56,7 +58,9 @@ passagemath-workspace/
 │   │
 │   ├── density_experiment.py       # Edge-density experiment
 │   ├── size_experiment.py          # Graph-size experiment
-│   └── weight_experiment.py        # Edge-weight experiment
+│   ├── weight_experiment.py        # Edge-weight experiment
+|   ├── lp_timing_experiment.py     # LP construction vs. solver timing
+│   └── lp_repeated_runs.py         # Repeated LP execution experiments
 │
 ├── presentation/                   # Math Lab presentation materials
 │
@@ -155,6 +159,12 @@ python -m experiments.density_experiment
 python -m experiments.weight_experiment
 ```
 
+```bash
+python -m experiments.lp_timing_experiment
+```
+
+The primary experiments run Dijkstra, Bellman-Ford, and each of the three LP backends on the same graph instances.
+
 The experiments require the Python dependencies used by the implementations, including PassageMath for the linear programming formulation.
 
 ---
@@ -178,10 +188,23 @@ cd fork
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
+Restart the shell after installation if necessary.
+Check the installation with:
+
+```bash
+uv --version
+```
+
 ### 3. Create an Environment
 
 ```bash
 uv venv
+```
+
+Activate the environment if needed:
+
+```bash
+source .venv/bin/activate
 ```
 
 ### 4. Install Passagemath Packages
@@ -193,7 +216,90 @@ uv pip install passagemath-combinat
 uv pip install passagemath-polyhedra
 ```
 
-### 5. Verify the Installation
+The LP experiments additionally require the HiGHS, GLPK, and CVXPY optimization backends.
+They can be installed through the PassageMath polyhedra extras:
+
+```bash
+uv pip install "passagemath-polyhedra[highs,glpk,cvxpy]"
+```
+
+If `passagemath-polyhedra` is already installed, running the command again adds the requested optional solver dependencies.
+
+### 5. Checking Solvers
+
+Before running the LP experiments, verify that PassageMath can create each required optimization backend.
+From the active environment:
+
+```bash
+python - <<'PY'
+from sage.numerical.backends.generic_backend import get_solver
+
+solvers = ["Highs", "GLPK", "Cvxpy"]
+
+for solver in solvers:
+    try:
+        backend = get_solver(solver=solver)
+        print(f"{solver}: available ({type(backend).__name__})")
+    except Exception as error:
+        print(f"{solver}: unavailable")
+        print(f"  {error}")
+PY
+```
+
+A working environment should report backends corresponding to:
+
+```bash
+HiGHS
+GLPK
+CVXPY
+```
+
+The available backend can also be tested directly through `MixedIntegerLinearProgram`:
+
+```bash
+python - <<'PY'
+from sage.numerical.mip import MixedIntegerLinearProgram
+
+for solver in ["Highs", "GLPK", "Cvxpy"]:
+    try:
+        MixedIntegerLinearProgram(solver=solver)
+        print(f"{solver}: OK")
+    except Exception as error:
+        print(f"{solver}: FAILED")
+        print(error)
+PY
+```
+
+### 6. Installing Missing Solvers
+
+If one or more backends are unavailable, install the corresponding PassageMath optional dependency.
+
+#### HiGHS
+```bash
+uv pip install "passagemath-polyhedra[highs]"
+```
+
+#### GLPK
+
+```bash
+uv pip install "passagemath-polyhedra[glpk]"
+```
+
+#### CVXPY
+
+```bash
+uv pip install "passagemath-polyhedra[cvxpy]"
+```
+
+All three can be installed together with:
+
+```bash
+uv pip install "passagemath-polyhedra[highs,glpk,cvxpy]"
+```
+
+After installation, rerun the solver-availability check before running the experiments.
+
+### 7. Verify the Installation
 
 ```bash
 uv run python -c "
@@ -208,24 +314,59 @@ The expected output is:
 7
 ```
 
+The optimization framework can also be verified with:
+
+```bash
+uv run python -c "
+from sage.numerical.mip import MixedIntegerLinearProgram
+p = MixedIntegerLinearProgram(maximization=False, solver='Highs')
+print(type(p.get_backend()).__name__)
+"
+```
+
 ---
 
 ## Troubleshooting
 
+### `python` Command Not Found
+Some Ubuntu installations expose Python only as python3.
+
+Check with:
+```bash
+python3 --version
+```
+If the PassageMath virtual environment is active, its Python executable should normally be available directly as:
+```bash
+python
+```
+The executable being used can be checked with:
+```bash
+which python
+```
 Some systems may require additional build dependencies when working directly with the Passagemath source repository.
 
-### Python Build Dependency
-
+### Missing Python Build Dependency
+If a build reports that `meson-python` is missing:
 ```bash
 uv pip install meson-python
 ```
 
-### System Dependency
+### Missing Ninja Build Tool
+On Ubuntu:
 
 ```bash
 sudo apt update
 sudo apt install ninja-build
 ```
+
+### Solver Backend Not Available
+First run the solver-availability check described above.
+
+Then install the missing optional backend, for example:
+```bash
+uv pip install "passagemath-polyhedra[glpk]"
+```
+Replace glpk with highs or cvxpy as needed.
 
 ---
 
