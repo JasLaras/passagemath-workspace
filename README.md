@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository is my workspace for an undergraduate mathematics research project focused on **optimization, linear programming (LP), mixed-integer programming (MIP), and combinatorial algorithms**. The experiments support an accompanying undergraduate thesis completed through the UC Davis Math Lab in polyhedral geometry and optimization with Professor Matthias K¨oppe 
+This repository is my workspace for an undergraduate mathematics research project focused on **optimization, linear programming (LP), mixed-integer programming (MIP), and combinatorial algorithms**. The experiments support an accompanying undergraduate thesis completed through the UC Davis Math Lab in polyhedral geometry and optimization with Professor Matthias K\¨oppe 
 
 The project compares classical shortest-path algorithms with a linear programming formulation of the shortest-path problem.
 
