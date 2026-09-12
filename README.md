@@ -143,32 +143,6 @@ These files contain the data used for the runtime and scalability analysis in th
 
 ---
 
-## Running the Experiments
-
-From the repository root:
-
-```bash
-python -m experiments.size_experiment
-```
-
-```bash
-python -m experiments.density_experiment
-```
-
-```bash
-python -m experiments.weight_experiment
-```
-
-```bash
-python -m experiments.lp_timing_experiment
-```
-
-The primary experiments run Dijkstra, Bellman-Ford, and each of the three LP backends on the same graph instances.
-
-The experiments require the Python dependencies used by the implementations, including PassageMath for the linear programming formulation.
-
----
-
 ## Passagemath Setup
 
 The `fork/` directory contains the Passagemath source repository used for research and exploration of the underlying project.
