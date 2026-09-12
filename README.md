@@ -2,12 +2,20 @@
 
 ## Overview
 
-This repository is my workspace for working in a mathematics research lab focused on **optimization, linear programming (LP), mixed-integer programming (MIP), and combinatorial algorithms**.
+This repository is my workspace for an undergraduate mathematics research project focused on **optimization, linear programming (LP), mixed-integer programming (MIP), and combinatorial algorithms**. The experiments support an accompanying undergraduate thesis completed through the UC Davis Math Lab in polyhedral geometry and optimization with Professor Matthias K¨oppe 
 
-The project combines:
+The project compares classical shortest-path algorithms with a linear programming formulation of the shortest-path problem.
 
-* Running **independent experiments** on optimization vs. graph/algorithmic methods
-* Developing material for a **research thesis (20–30 pages)**
+The primary methods studied are:
+
+* Dijkstra's algorithm
+* Bellman-Ford algorithm
+* A shortest-path linear programming formulation implemented with PassageMath
+
+The LP formulation is evaluated using three optimization backends:
+* HiGHS
+* GLPK
+* CVXPY
 
 ---
 
