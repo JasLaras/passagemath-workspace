@@ -333,15 +333,6 @@ sudo apt update
 sudo apt install ninja-build
 ```
 
-### Solver Backend Not Available
-First run the solver-availability check described above.
-
-Then install the missing optional backend, for example:
-```bash
-uv pip install "passagemath-polyhedra[glpk]"
-```
-Replace glpk with highs or cvxpy as needed.
-
 ---
 
 ## Thesis and Presentation
